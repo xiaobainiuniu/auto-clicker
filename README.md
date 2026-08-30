@@ -78,6 +78,14 @@ python tools/gen_icon.py  # 重新生成图标（需 Pillow）
 
 技术栈：[Rust](https://www.rust-lang.org) + [egui/eframe](https://github.com/emilk/egui) + winapi（SendInput / PostMessage / Shell_NotifyIcon / RegisterHotKey）。
 
+## 🤝 参与贡献
+
+欢迎任何形式的参与！
+
+- 🐛 发现 Bug 或有功能建议 → [提一个 Issue](../../issues)
+- 💡 有任何想法或使用疑问 → 欢迎在 Issue 里留言
+- ⭐ 觉得好用就点个 Star，谢谢各位！
+
 ## 📄 License
 
 [MIT](LICENSE)
