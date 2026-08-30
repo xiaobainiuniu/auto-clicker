@@ -1,0 +1,6 @@
+# 构建产物
+/target
+
+# Windows 系统文件
+Thumbs.db
+Desktop.ini

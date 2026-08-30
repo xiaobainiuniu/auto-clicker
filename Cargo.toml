@@ -1,0 +1,24 @@
+[package]
+name = "auto-clicker"
+version = "0.1.0"
+edition = "2021"
+description = "轻量级 Windows 连点器：选择屏幕位置自动连点，支持倒计时与全局热键"
+license = "MIT"
+
+[[bin]]
+name = "AutoClicker"
+path = "src/main.rs"
+
+[dependencies]
+eframe = "0.31"
+winapi = { version = "0.3", features = ["winuser", "wingdi", "windef", "minwindef", "shellapi", "libloaderapi", "synchapi", "errhandlingapi", "winerror"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[build-dependencies]
+embed-resource = "2"
+
+[profile.release]
+strip = true
+lto = "thin"
