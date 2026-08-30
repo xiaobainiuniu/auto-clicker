@@ -1,101 +1,99 @@
-# Auto Clicker
+# Auto Clicker · 连点器
 
 <p align="center">
-  <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a>
+  <strong>简体中文</strong> | <a href="README.en.md">English</a>
 </p>
 
 [![Rust](https://img.shields.io/badge/Rust-1.75+-orange)](https://www.rust-lang.org)
 [![Platform](https://img.shields.io/badge/Platform-Windows-blue)](https://github.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-A lightweight Windows auto clicker that lets you pick any point on the screen and click it repeatedly at a configurable interval.
+轻量级 Windows 连点工具：在屏幕上选择任意位置，程序自动按设定频率连点。
+支持**多显示器取点**、**倒计时自动停止**、**全局热键**、**后台点击（光标完全不动）**，
+常驻系统托盘，单文件 exe，无任何运行时依赖。
 
-It supports **multi-monitor point selection**, **automatic stop countdown**, **global hotkeys**, and **background clicking without moving the cursor**. The app runs in the system tray and is distributed as a single executable with no runtime dependencies.
-
-| Main Window | Full-screen Picker | Running |
+| 主界面 | 全屏取点 | 连点中 |
 |:---:|:---:|:---:|
-| ![Main Window](docs/images/main.png) | ![Full-screen Picker](docs/images/picker.png) | ![Running](docs/images/running.png) |
+| ![主界面](docs/images/main.png) | ![全屏取点](docs/images/picker.png) | ![连点中](docs/images/running.png) |
 
-## ✨ Features
+## ✨ 功能亮点
 
-- **Full-screen crosshair picker (`F2`)** — Covers the entire desktop with a crosshair and a 3× live magnifier for pixel-accurate point selection. The background uses a live desktop snapshot, so what you see is what you select.
-- **Multi-monitor support** — The picker spans all monitors and handles mixed-DPI setups correctly, including secondary displays positioned in any direction.
-- **Two click modes**:
-  - **Universal mode** — Uses `SendInput`; works with most applications, but the mouse cursor briefly moves to the target position for each click.
-  - **Background mode** — Uses `PostMessage`; the **cursor stays completely still**, so you can keep using the computer while clicks are sent to ordinary windows such as browsers.
-- **Precise interval control** — Enter any interval from 0.001 to 60 seconds (default: 0.1 seconds).
-- **Stop control** — Set an automatic stop timer from 10 seconds to 10 hours, use `0` for unlimited duration, or stop manually with `F6` at any time.
-- **Global hotkeys** — `F2` to pick a point and `F6` to start/stop, even when the app is minimized to the tray.
-- **System tray integration** — Left-click to restore the window; right-click for start/stop, point selection, click mode, interval, duration, always-on-top, and exit controls. Closing the window minimizes it to the tray instead of terminating active clicking.
-- **Single-instance behavior** — Launching the executable again brings the existing window to the foreground instead of opening another process.
-- **Runtime parameter locking** — Settings are disabled while clicking is active to prevent changes that would not take effect until the next run.
-- **Persistent settings** — Position, interval, duration, and click mode are restored on the next launch.
-- **Always-on-top option** plus real-time click count and remaining-time display.
+- **全屏准星取点**（`F2`）：覆盖层铺满整个桌面，十字准星 + 3 倍实时放大镜，像素级精确选点；背景为屏幕实时快照，所见即所得
+- **多显示器支持**：取点覆盖层横跨所有屏幕（副屏在主屏任意方向均可），坐标换算适配混合 DPI 缩放，不偏移
+- **两种点击模式**：
+  - **通用模式** —— SendInput 注入，所有软件可用，点击瞬间光标会跳到目标点
+  - **后台模式** —— PostMessage 消息点击，**光标完全不动**，您可以继续用电脑做其他事情（适合浏览器等普通窗口）
+- **精确间隔**：0.001 ~ 60 秒自由输入（默认 0.1 秒），纯数字输入框，不做拖动
+- **结束控制**：倒计时自动停止（10 秒 ~ 10 小时，0 = 不限时），或随时 `F6` 手动启停
+- **全局热键**：`F2` 取点 / `F6` 开始·停止，程序不在前台、甚至缩到托盘时依然生效
+- **系统托盘**：常驻通知区域；左键单击显示窗口，右键菜单包含全部功能（开始·停止 / 取点 / 点击模式 / 间隔 / 时长 / 置顶 / 退出）；点窗口 ✕ 只是缩到托盘，连点不中断
+- **单实例**：重复双击 exe 只会唤出正在运行的程序，不会开出一堆进程
+- **运行中锁定参数**：连点进行时界面与托盘的参数修改自动置灰，防止误改无效配置
+- **记忆上次配置**：坐标 / 间隔 / 时长 / 模式自动保存，下次启动原样恢复
+- **窗口置顶**开关、实时显示已点击次数与剩余时间
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-### Option 1: Download the executable
+**方式一：直接下载**
 
-Download `AutoClicker.exe` from the [Releases](../../releases) page and run it directly. No installation is required.
+到 [Releases](../../releases) 页面下载 `AutoClicker.exe`，双击即用，无需安装。
 
-### Option 2: Build from source
-
-Requires [Rust](https://rustup.rs).
+**方式二：源码编译**（需 [Rust](https://rustup.rs)）
 
 ```bash
 cargo build --release
-# Output: target\release\AutoClicker.exe
+# 产物: target\release\AutoClicker.exe
 ```
 
-## 📖 Usage
+## 📖 使用方法
 
-1. Press `F2` (or click **Select Position**) → move the cursor to the target → **left-click to confirm** (`Esc` to cancel).
-2. Configure the click interval and optional countdown timer.
-3. Press `F6` to start clicking. Press `F6` again to stop.
+1. 按 `F2`（或点“选择位置”）→ 移动鼠标到目标点 → **左键确认**（Esc 取消）
+2. 输入点击间隔与倒计时
+3. 按 `F6` 开始连点，再按 `F6` 停止
 
-| Hotkey | Action |
+| 热键 | 作用 |
 |---|---|
-| `F2` | Open the full-screen point picker |
-| `F6` | Start / stop auto clicking |
+| `F2` | 打开全屏取点（运行中锁定） |
+| `F6` | 开始 / 停止连点 |
 
-> 💡 For ordinary windows such as browsers, try **Background mode** if you want the mouse cursor to remain completely still while clicking continues.
+> 💡 目标是浏览器等普通窗口时，切换到“后台模式”，连点期间光标完全不动，您可以继续做其他事情。
 
-## 🖱️ Click Modes
+## 🖱️ 点击模式对比
 
-| Mode | Implementation | Cursor behavior | Best for |
+| 模式 | 原理 | 光标 | 适用场景 |
 |---|---|---|---|
-| Universal (default) | `SendInput` | Briefly moves to the target | General compatibility, including some games |
-| Background | `PostMessage` | **Does not move** | Browsers and ordinary desktop windows |
+| 通用模式（默认） | SendInput 注入 | 点击瞬间跳到目标点 | 所有软件，包括部分游戏 |
+| 后台模式 | PostMessage 发消息 | **完全不动** | 浏览器等普通窗口 |
 
-## ❓ FAQ
+## ❓ 常见问题
 
-- **Windows SmartScreen warning** — The executable is not code-signed. On first launch, choose **More info → Run anyway** if you trust the downloaded release.
-- **F2 / F6 does not work** — Another application may already be using the same global hotkey. Close the conflicting app and restart Auto Clicker.
-- **Background mode does not click the target** — The target application may not accept message-based clicks. Switch to Universal mode.
-- **Point selection is incorrect on a secondary monitor** — Multi-monitor setups are supported natively. If coordinates still look wrong, verify your Windows display scaling settings and select the point again.
+- **SmartScreen 提示**：exe 未做代码签名，首次运行点“更多信息 → 仍要运行”即可，不影响使用。
+- **快捷键失效**：F2 / F6 可能被其他程序占用，关闭占用程序后重启本程序。
+- **后台模式点击无效**：目标程序不支持消息级点击，请换用通用模式。
+- **副屏取不到点**：本程序原生支持多显示器；若仍异常，请确认系统缩放设置后重新取点。
 
-## 🛠️ Development
+## 🛠️ 开发
 
 ```bash
-cargo run                 # Run in debug mode
-cargo build --release     # Build release executable
-python tools/gen_icon.py  # Regenerate the icon (requires Pillow)
+cargo run                 # 调试运行
+cargo build --release     # 发布构建
+python tools/gen_icon.py  # 重新生成图标（需 Pillow）
 ```
 
-Tech stack: [Rust](https://www.rust-lang.org) + [egui/eframe](https://github.com/emilk/egui) + WinAPI (`SendInput` / `PostMessage` / `Shell_NotifyIcon` / `RegisterHotKey`).
+技术栈：[Rust](https://www.rust-lang.org) + [egui/eframe](https://github.com/emilk/egui) + WinAPI（SendInput / PostMessage / Shell_NotifyIcon / RegisterHotKey）。
 
-## 🤝 Contributing
+## 🤝 参与贡献
 
-Contributions and feedback are welcome.
+欢迎任何形式的参与！
 
-- 🐛 Found a bug or have a feature request? → [Open an issue](../../issues)
-- 💡 Have an idea or usage question? → Start a discussion in Issues
-- ⭐ If the project is useful to you, consider giving it a Star
+- 🐛 发现 Bug 或有功能建议 → [提一个 Issue](../../issues)
+- 💡 有任何想法或使用疑问 → 欢迎在 Issue 里留言
+- ⭐ 觉得好用就点个 Star，谢谢各位！
 
 ## 📄 License
 
 [MIT](LICENSE)
 
-## ⚠️ Disclaimer
+## ⚠️ 使用声明
 
-This project is intended for learning, research, and legitimate automation use cases such as testing and accessibility assistance. Please follow the terms of service of any software you interact with and comply with applicable laws and regulations. You are responsible for how you use this tool.
+本工具仅供学习研究与合法自动化操作使用（如自动化测试、辅助操作等）。使用时请遵守目标软件的服务条款与相关法律法规，由此产生的一切后果与开发者无关。
